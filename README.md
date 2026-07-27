@@ -25,8 +25,13 @@ src/agent_lab/
   tools.py        # safe, self-validating tools + registry
   trajectory.py   # structured, JSON-serialisable run logs
   agent.py        # deterministic tool-calling agent
+  evaluator.py    # rubric-driven scorer -> scores + P0/P1/P2 findings + verdict
+  store.py        # SQLite persistence + named-query analytics
 rubrics/
   agent_eval_rubric.md   # 0–4 scoring, P0/P1/P2 findings
+sql/
+  analytics.sql   # named analytics queries over evaluation results
+ts/               # TypeScript CLI: cross-language port of the scorer
 tests/            # pytest suite
 ```
 
@@ -46,9 +51,23 @@ print(traj.final_answer)   # -> "42"
 print(traj.to_json())      # full auditable trajectory
 ```
 
+## Evaluate & analyse
+
+```python
+from agent_lab import ToolCallingAgent
+from agent_lab.evaluator import evaluate
+from agent_lab.store import EvalStore
+
+agent, store = ToolCallingAgent(), EvalStore(":memory:")
+for q in ["12 + 30", "reverse hi", "write me a poem"]:
+    store.record(q, evaluate(agent.run(q)))
+
+print(store.run_named("verdict_distribution"))
+print(store.run_named("weakest_categories"))
+```
+
 ## Roadmap
 
 See [`MEMORY.md`](./MEMORY.md) for the running log. Upcoming increments:
-rubric-driven trajectory evaluator, red-team suites (prompt injection, PII leak,
-authority escalation), a SQL analytics layer over evaluation results, and a
-second-language CLI runner.
+red-team suites (prompt injection, PII leak, authority escalation), a
+"Golden Path" refactor demo, and a dbt-style transform of evaluation metrics.

@@ -16,6 +16,11 @@ htmlcov/
 .mypy_cache/
 .ruff_cache/
 
+# Node / TypeScript
+node_modules/
+dist/
+*.tsbuildinfo
+
 # Editor / OS
 .DS_Store
 .idea/

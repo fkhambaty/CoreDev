@@ -19,6 +19,16 @@ against an objective rubric and stress-test it for security failures
 
 ## Log
 
+### Day 2 · 6 · 7 (batch)
+- **Evaluator** (`evaluator.py`): rubric-driven scorer → per-category 0–4 scores,
+  P0/P1/P2 findings, verdict. Adversarial-input detector (`looks_adversarial`).
+- **SQL analytics** (`store.py` + `sql/analytics.sql`): SQLite persistence of
+  evaluations/scores/findings; named analytics queries (verdict distribution,
+  findings by severity, weakest categories, failing queries).
+- **TypeScript CLI** (`ts/`): cross-language port of the scorer that reads the
+  Python trajectory JSON and agrees on the verdict; vitest suite + strict tsc.
+- Python suite: 22 passing. TS suite: 6 passing.
+
 ### Day 1
 - Scaffolded package `src/agent_lab` with `tools`, `trajectory`, `agent`.
 - Deterministic `ToolCallingAgent` routes queries to one of four safe tools.
